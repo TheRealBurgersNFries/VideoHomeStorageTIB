@@ -140,7 +140,7 @@ namespace VideoHomeStorage.TIB
                 case BitDepth.bit:
                     BitArray ba = new BitArray(data[i_data - 1]);
                     bool bval = ba[0];
-                    for (int i_bit = 1; i_bit < 7; i_bit++)
+                    for (int i_bit = 1; i_bit <= 7; i_bit++)
                         bval = bval ^ ba[i_bit];
                     return Convert.ToInt16(bval);
 
@@ -151,7 +151,7 @@ namespace VideoHomeStorage.TIB
                     {
                         ba = new BitArray(data[p_data + i_bit]);
                         bval = ba[0];
-                        for (int j_bit = 1; j_bit < 7; j_bit++)
+                        for (int j_bit = 1; j_bit <= 7; j_bit++)
                             bval = bval ^ ba[j_bit];
                         ret_val[i_bit] = bval;
                     }
@@ -164,7 +164,7 @@ namespace VideoHomeStorage.TIB
                     {
                         ba = new BitArray(data[p_data + i_bit]);
                         bval = ba[0];
-                        for (int j_bit = 1; j_bit < 7; j_bit++)
+                        for (int j_bit = 1; j_bit <= 7; j_bit++)
                             bval = bval ^ ba[j_bit];
                         ret_val[i_bit] = bval;
                     }
