@@ -169,6 +169,8 @@ namespace VideoHomeStorage.TIB
                         ret_val[i_bit] = bval;
                     }
                     return Convert.ToInt16(ret_val);
+                default:
+                    throw new ApplicationException("Invalid bit depth! This shouldn't happen...");
             }
         }
 
