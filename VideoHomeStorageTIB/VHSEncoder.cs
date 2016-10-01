@@ -110,17 +110,17 @@ namespace VideoHomeStorage.TIB
             {
                 case BitDepth.bit:
                     BitArray ba = new BitArray(new byte[] { data[i_data] });
-                    val = ba[bytePos] ? 65535 : 0;
+                    val = ba[bytePos] ? 1 : 0;
                     return val * 255;
                 case BitDepth.nibble:
                     val = (int)data[i_data];
                     if (bytePos == 0)
                     {
-                        val &= 0x0F;
+                        val = val >> 4;
                     }
                     else // bytePos == 1
                     {
-                        val = val >> 4;
+                        val &= 0x0F;
                     }
                     return val * 17;
                 case BitDepth.byt:
