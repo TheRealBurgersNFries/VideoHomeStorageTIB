@@ -10,7 +10,7 @@ namespace VideoHomeStorage.TIB
 {
     public static class VHSEncoder
     {
-        private enum BitDepth { bit = 1, nibble = 4, byt = 8 }; // byte is reserved
+        private enum BitDepth { bit = 1, nibble = 4, byt = 8 }; // byte is reserved\
 
         // Configuration constants
         private static int streamWidth = 480; // Horizontal resolution of frame
@@ -37,6 +37,7 @@ namespace VideoHomeStorage.TIB
             }
 
             Bitmap bmp = new Bitmap(streamWidth, streamHeight);
+            Graphics g = Graphics.FromImage(bmp);
 
             int i_data, i_row, i_col;
             i_row = 0;
@@ -50,7 +51,7 @@ namespace VideoHomeStorage.TIB
                 {
                     // We need to insert a parity symbol here
                     val = calculateParity(data, i_data);
-                    fillSymbol(bmp, i_row, i_col, val);
+                    fillSymbol(g, i_row, i_col, val);
                     i_col++; // We are going to another column
                     if(i_col == numCols - 1)
                     {
@@ -89,7 +90,7 @@ namespace VideoHomeStorage.TIB
                         throw new ApplicationException("Invalid bit depth! This shouldn't happen...");
                 }
 
-                fillSymbol(bmp, i_row, i_col, val);
+                fillSymbol(g, i_row, i_col, val);
 
                 i_col++; // We are going to another column
                 if (i_col == numCols - 1)
@@ -174,9 +175,14 @@ namespace VideoHomeStorage.TIB
             }
         }
 
-        private static void fillSymbol(Bitmap bmp, int i_row, int i_col, int val)
+        private static void fillSymbol(Graphics g, int i_row, int i_col, int val)
         {
-            throw new NotImplementedException();
+            int xPos = i_col * symbolWidth;
+            int yPos = i_row * symbolHeight;
+            Rectangle symbol = new Rectangle(xPos, yPos, symbolWidth, symbolHeight);
+            Color valColor = Color.FromArgb(val, val, val);
+            SolidBrush b = new SolidBrush(valColor);
+            g.FillRectangle(b, symbol);
         }
 
         public static void Decode()
