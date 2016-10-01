@@ -19,11 +19,11 @@ namespace VideoHomeStorage.TIB
         private static BitDepth bitDepth = BitDepth.nibble; // Number of bits per symbol
         // Block size is 8 symbols
         private static int hBlocks = 2; // Number of data blocks per line
-        private static bool pairity = true; // Whether a pairity symbol is included after each data block
+        private static bool parity = true; // Whether a pairity symbol is included after each data block
         private static int vRows = 1; // Number of rows/lines per frame
 
         // Derived constants
-        private static int numCols = (hBlocks * 8) + (pairity ? hBlocks : 0);
+        private static int numCols = (hBlocks * 8) + (parity ? hBlocks : 0);
         private static int numRows = vRows;
         private static int symbolWidth = streamWidth / numCols;
         private static int symbolHeight = streamHeight / numRows;
@@ -46,7 +46,7 @@ namespace VideoHomeStorage.TIB
             {
                 int val = 0;
 
-                if (i_data % 8 == 0 && i_col != 0 && pairity)
+                if (i_data % 8 == 0 && i_col != 0 && parity)
                 {
                     // We need to insert a parity symbol here
                     val = calculateParity(data, i_data);
@@ -133,7 +133,43 @@ namespace VideoHomeStorage.TIB
 
         private static int calculateParity(byte[] data, int i_data)
         {
-            throw new NotImplementedException();
+            
+            switch (bitDepth)
+            {
+
+                case BitDepth.bit:
+                    BitArray ba = new BitArray(data[i_data - 1]);
+                    bool bval = ba[0];
+                    for (int i_bit = 1; i_bit < 7; i_bit++)
+                        bval = bval ^ ba[i_bit];
+                    return Convert.ToInt16(bval);
+
+                case BitDepth.nibble:
+                    int p_data = i_data - 4;
+                    BitArray ret_val = new BitArray(0000);
+                    for (int i_bit = 0; i_bit < 4; i_bit++)
+                    {
+                        ba = new BitArray(data[p_data + i_bit]);
+                        bval = ba[0];
+                        for (int j_bit = 1; j_bit < 7; j_bit++)
+                            bval = bval ^ ba[j_bit];
+                        ret_val[i_bit] = bval;
+                    }
+                    return Convert.ToInt16(ret_val);
+
+                case BitDepth.byt:
+                    p_data = i_data - 8;
+                    ret_val = new BitArray(00000000);
+                    for (int i_bit = 0; i_bit < 8; i_bit++)
+                    {
+                        ba = new BitArray(data[p_data + i_bit]);
+                        bval = ba[0];
+                        for (int j_bit = 1; j_bit < 7; j_bit++)
+                            bval = bval ^ ba[j_bit];
+                        ret_val[i_bit] = bval;
+                    }
+                    return Convert.ToInt16(ret_val);
+            }
         }
 
         private static void fillSymbol(Bitmap bmp, int i_row, int i_col, int val)
