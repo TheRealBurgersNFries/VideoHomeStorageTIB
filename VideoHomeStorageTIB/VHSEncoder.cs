@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VideoHomeStorageTIB
+namespace VideoHomeStorage.TIB
 {
-    public class Class1
+    public class VHSEncoder
     {
     }
 }
