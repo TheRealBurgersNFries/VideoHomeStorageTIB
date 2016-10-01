@@ -27,7 +27,7 @@ namespace VideoHomeStorage.TIB
         private static int numRows = vRows;
         private static int symbolWidth = streamWidth / numCols;
         private static int symbolHeight = streamHeight / numRows;
-        private static int bytesPerFrame = hBlocks * 8 * vRows * ((int)bitDepth / 8);
+        private static int bytesPerFrame = (int)(hBlocks * 8 * vRows * ((float)bitDepth / 8F));
 
         public static Bitmap Encode(byte[] data)
         {
